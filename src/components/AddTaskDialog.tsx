@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/select";
 import { Plus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 
 interface AddTaskDialogProps {
   rooms: { id: string; name: string }[];
