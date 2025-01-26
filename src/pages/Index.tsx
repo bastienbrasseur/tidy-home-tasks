@@ -3,9 +3,14 @@ import { Room, Task } from "@/lib/types";
 import { RoomCard } from "@/components/RoomCard";
 import { AddTaskDialog } from "@/components/AddTaskDialog";
 import { RoomManager } from "@/components/RoomManager";
+import { FloatingActionButton } from "@/components/FloatingActionButton";
+import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
   const [rooms, setRooms] = React.useState<Room[]>([]);
+  const [isTaskDialogOpen, setIsTaskDialogOpen] = React.useState(false);
+  const [isRoomDialogOpen, setIsRoomDialogOpen] = React.useState(false);
+  const { toast } = useToast();
 
   const handleAddRoom = (name: string) => {
     const newRoom: Room = {
@@ -24,6 +29,10 @@ const Index = () => {
 
   const handleDeleteRoom = (id: string) => {
     setRooms(rooms.filter((room) => room.id !== id));
+    toast({
+      title: "Pièce supprimée",
+      description: "La pièce a été supprimée avec succès",
+    });
   };
 
   const handleAddTask = (title: string, roomId: string) => {
@@ -72,13 +81,6 @@ const Index = () => {
       <h1 className="text-3xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-ios-blue to-blue-600">
         Ma Maison
       </h1>
-      
-      <RoomManager
-        rooms={rooms}
-        onAddRoom={handleAddRoom}
-        onEditRoom={handleEditRoom}
-        onDeleteRoom={handleDeleteRoom}
-      />
 
       <div className="max-w-4xl mx-auto grid gap-6 sm:grid-cols-2">
         {rooms.map((room) => (
@@ -88,6 +90,10 @@ const Index = () => {
             onToggleTask={handleToggleTask}
             onDeleteTask={handleDeleteTask}
             onToggleUrgent={handleToggleUrgent}
+            onEditRoom={(room) => {
+              setIsRoomDialogOpen(true);
+            }}
+            onDeleteRoom={handleDeleteRoom}
           />
         ))}
       </div>
@@ -95,6 +101,22 @@ const Index = () => {
       <AddTaskDialog
         rooms={rooms}
         onAddTask={handleAddTask}
+        open={isTaskDialogOpen}
+        onOpenChange={setIsTaskDialogOpen}
+      />
+
+      <RoomManager
+        rooms={rooms}
+        onAddRoom={handleAddRoom}
+        onEditRoom={handleEditRoom}
+        onDeleteRoom={handleDeleteRoom}
+        open={isRoomDialogOpen}
+        onOpenChange={setIsRoomDialogOpen}
+      />
+
+      <FloatingActionButton
+        onAddRoom={() => setIsRoomDialogOpen(true)}
+        onAddTask={() => setIsTaskDialogOpen(true)}
       />
     </div>
   );

@@ -4,7 +4,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,17 +14,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Plus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
 interface AddTaskDialogProps {
   rooms: { id: string; name: string }[];
   onAddTask: (title: string, room: string) => void;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }
 
-export const AddTaskDialog: React.FC<AddTaskDialogProps> = ({ rooms, onAddTask }) => {
-  const [open, setOpen] = React.useState(false);
+export const AddTaskDialog: React.FC<AddTaskDialogProps> = ({
+  rooms,
+  onAddTask,
+  open,
+  onOpenChange,
+}) => {
   const [title, setTitle] = React.useState("");
   const [selectedRoom, setSelectedRoom] = React.useState("");
   const { toast } = useToast();
@@ -43,7 +47,7 @@ export const AddTaskDialog: React.FC<AddTaskDialogProps> = ({ rooms, onAddTask }
     onAddTask(title.trim(), selectedRoom);
     setTitle("");
     setSelectedRoom("");
-    setOpen(false);
+    onOpenChange(false);
     toast({
       title: "Tâche ajoutée",
       description: "La tâche a été ajoutée avec succès",
@@ -51,20 +55,7 @@ export const AddTaskDialog: React.FC<AddTaskDialogProps> = ({ rooms, onAddTask }
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button
-          className={cn(
-            "fixed bottom-6 right-6 h-14 w-14 rounded-full",
-            "bg-gradient-to-r from-ios-blue to-blue-500",
-            "shadow-lg hover:shadow-xl transition-all duration-300",
-            "hover:scale-105 active:scale-95",
-            "border-none outline-none"
-          )}
-        >
-          <Plus className="h-6 w-6 text-white" />
-        </Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px] bg-white/80 backdrop-blur-sm">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-ios-blue to-blue-600">
@@ -92,7 +83,10 @@ export const AddTaskDialog: React.FC<AddTaskDialogProps> = ({ rooms, onAddTask }
           </Select>
           <Button 
             type="submit" 
-            className="w-full bg-gradient-to-r from-ios-blue to-blue-500 hover:opacity-90 transition-all duration-200"
+            className={cn(
+              "w-full bg-gradient-to-r from-ios-blue to-blue-500",
+              "hover:opacity-90 transition-all duration-200"
+            )}
           >
             Ajouter
           </Button>
