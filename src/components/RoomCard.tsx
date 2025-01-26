@@ -15,17 +15,20 @@ interface RoomCardProps {
   onDeleteRoom: (id: string) => void;
 }
 
-export const RoomCard: React.FC<RoomCardProps> = ({
+export const RoomCard = ({
   room,
   onToggleTask,
   onDeleteTask,
   onToggleUrgent,
   onEditRoom,
   onDeleteRoom,
-}) => {
-  const progress = room.tasks.length
-    ? (room.tasks.filter((t) => t.completed).length / room.tasks.length) * 100
-    : 0;
+}: RoomCardProps) => {
+  const progress = React.useMemo(() => 
+    room.tasks.length
+      ? (room.tasks.filter((t) => t.completed).length / room.tasks.length) * 100
+      : 0,
+    [room.tasks]
+  );
 
   return (
     <Card className="group hover:shadow-lg transition-all duration-300 animate-fade-in bg-white/80 backdrop-blur-sm border-transparent hover:border-ios-blue/20">

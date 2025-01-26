@@ -1,80 +1,24 @@
 import React from "react";
-import { Room, Task } from "@/lib/types";
 import { RoomCard } from "@/components/RoomCard";
 import { AddTaskDialog } from "@/components/AddTaskDialog";
 import { RoomManager } from "@/components/RoomManager";
 import { FloatingActionButton } from "@/components/FloatingActionButton";
-import { useToast } from "@/hooks/use-toast";
+import { useHomeManager } from "@/hooks/useHomeManager";
 
 const Index = () => {
-  const [rooms, setRooms] = React.useState<Room[]>([]);
+  const {
+    rooms,
+    addRoom,
+    editRoom,
+    deleteRoom,
+    addTask,
+    toggleTask,
+    deleteTask,
+    toggleUrgentTask,
+  } = useHomeManager();
+
   const [isTaskDialogOpen, setIsTaskDialogOpen] = React.useState(false);
   const [isRoomDialogOpen, setIsRoomDialogOpen] = React.useState(false);
-  const { toast } = useToast();
-
-  const handleAddRoom = (name: string) => {
-    const newRoom: Room = {
-      id: Date.now().toString(),
-      name,
-      tasks: [],
-    };
-    setRooms([...rooms, newRoom]);
-  };
-
-  const handleEditRoom = (id: string, name: string) => {
-    setRooms(rooms.map((room) =>
-      room.id === id ? { ...room, name } : room
-    ));
-  };
-
-  const handleDeleteRoom = (id: string) => {
-    setRooms(rooms.filter((room) => room.id !== id));
-    toast({
-      title: "Pièce supprimée",
-      description: "La pièce a été supprimée avec succès",
-    });
-  };
-
-  const handleAddTask = (title: string, roomId: string) => {
-    const newTask: Task = {
-      id: Date.now().toString(),
-      title,
-      completed: false,
-      urgent: false,
-      room: roomId,
-    };
-
-    setRooms(rooms.map((room) =>
-      room.id === roomId
-        ? { ...room, tasks: [...room.tasks, newTask] }
-        : room
-    ));
-  };
-
-  const handleToggleTask = (taskId: string) => {
-    setRooms(rooms.map((room) => ({
-      ...room,
-      tasks: room.tasks.map((task) =>
-        task.id === taskId ? { ...task, completed: !task.completed } : task
-      ),
-    })));
-  };
-
-  const handleDeleteTask = (taskId: string) => {
-    setRooms(rooms.map((room) => ({
-      ...room,
-      tasks: room.tasks.filter((task) => task.id !== taskId),
-    })));
-  };
-
-  const handleToggleUrgent = (taskId: string) => {
-    setRooms(rooms.map((room) => ({
-      ...room,
-      tasks: room.tasks.map((task) =>
-        task.id === taskId ? { ...task, urgent: !task.urgent } : task
-      ),
-    })));
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 sm:p-6">
@@ -87,29 +31,29 @@ const Index = () => {
           <RoomCard
             key={room.id}
             room={room}
-            onToggleTask={handleToggleTask}
-            onDeleteTask={handleDeleteTask}
-            onToggleUrgent={handleToggleUrgent}
-            onEditRoom={(room) => {
+            onToggleTask={toggleTask}
+            onDeleteTask={deleteTask}
+            onToggleUrgent={toggleUrgentTask}
+            onEditRoom={() => {
               setIsRoomDialogOpen(true);
             }}
-            onDeleteRoom={handleDeleteRoom}
+            onDeleteRoom={deleteRoom}
           />
         ))}
       </div>
 
       <AddTaskDialog
         rooms={rooms}
-        onAddTask={handleAddTask}
+        onAddTask={addTask}
         open={isTaskDialogOpen}
         onOpenChange={setIsTaskDialogOpen}
       />
 
       <RoomManager
         rooms={rooms}
-        onAddRoom={handleAddRoom}
-        onEditRoom={handleEditRoom}
-        onDeleteRoom={handleDeleteRoom}
+        onAddRoom={addRoom}
+        onEditRoom={editRoom}
+        onDeleteRoom={deleteRoom}
         open={isRoomDialogOpen}
         onOpenChange={setIsRoomDialogOpen}
       />
