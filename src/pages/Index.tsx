@@ -2,16 +2,29 @@ import React from "react";
 import { Room, Task } from "@/lib/types";
 import { RoomCard } from "@/components/RoomCard";
 import { AddTaskDialog } from "@/components/AddTaskDialog";
-
-const INITIAL_ROOMS: Room[] = [
-  { id: "cuisine", name: "Cuisine", tasks: [] },
-  { id: "salon", name: "Salon", tasks: [] },
-  { id: "chambre", name: "Chambre", tasks: [] },
-  { id: "sdb", name: "Salle de bain", tasks: [] },
-];
+import { RoomManager } from "@/components/RoomManager";
 
 const Index = () => {
-  const [rooms, setRooms] = React.useState<Room[]>(INITIAL_ROOMS);
+  const [rooms, setRooms] = React.useState<Room[]>([]);
+
+  const handleAddRoom = (name: string) => {
+    const newRoom: Room = {
+      id: Date.now().toString(),
+      name,
+      tasks: [],
+    };
+    setRooms([...rooms, newRoom]);
+  };
+
+  const handleEditRoom = (id: string, name: string) => {
+    setRooms(rooms.map((room) =>
+      room.id === id ? { ...room, name } : room
+    ));
+  };
+
+  const handleDeleteRoom = (id: string) => {
+    setRooms(rooms.filter((room) => room.id !== id));
+  };
 
   const handleAddTask = (title: string, roomId: string) => {
     const newTask: Task = {
@@ -60,6 +73,13 @@ const Index = () => {
         Ma Maison
       </h1>
       
+      <RoomManager
+        rooms={rooms}
+        onAddRoom={handleAddRoom}
+        onEditRoom={handleEditRoom}
+        onDeleteRoom={handleDeleteRoom}
+      />
+
       <div className="max-w-4xl mx-auto grid gap-6 sm:grid-cols-2">
         {rooms.map((room) => (
           <RoomCard
@@ -73,7 +93,7 @@ const Index = () => {
       </div>
 
       <AddTaskDialog
-        rooms={rooms.map(({ id, name }) => ({ id, name }))}
+        rooms={rooms}
         onAddTask={handleAddTask}
       />
     </div>
