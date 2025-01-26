@@ -53,23 +53,32 @@ export const AddTaskDialog: React.FC<AddTaskDialogProps> = ({ rooms, onAddTask }
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
-          className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg bg-ios-blue hover:bg-ios-blue/90"
+          className={cn(
+            "fixed bottom-6 right-6 h-14 w-14 rounded-full",
+            "bg-gradient-to-r from-ios-blue to-blue-500",
+            "shadow-lg hover:shadow-xl transition-all duration-300",
+            "hover:scale-105 active:scale-95",
+            "border-none outline-none"
+          )}
         >
-          <Plus className="h-6 w-6" />
+          <Plus className="h-6 w-6 text-white" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] bg-white/80 backdrop-blur-sm">
         <DialogHeader>
-          <DialogTitle>Ajouter une tâche</DialogTitle>
+          <DialogTitle className="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-ios-blue to-blue-600">
+            Ajouter une tâche
+          </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
           <Input
             placeholder="Nom de la tâche"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+            className="border-gray-200 focus:border-ios-blue/50 transition-all duration-200"
           />
           <Select value={selectedRoom} onValueChange={setSelectedRoom}>
-            <SelectTrigger>
+            <SelectTrigger className="border-gray-200 focus:border-ios-blue/50 transition-all duration-200">
               <SelectValue placeholder="Sélectionner une pièce" />
             </SelectTrigger>
             <SelectContent>
@@ -80,7 +89,10 @@ export const AddTaskDialog: React.FC<AddTaskDialogProps> = ({ rooms, onAddTask }
               ))}
             </SelectContent>
           </Select>
-          <Button type="submit" className="w-full">
+          <Button 
+            type="submit" 
+            className="w-full bg-gradient-to-r from-ios-blue to-blue-500 hover:opacity-90 transition-all duration-200"
+          >
             Ajouter
           </Button>
         </form>

@@ -55,10 +55,12 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 sm:p-6">
-      <h1 className="text-2xl font-bold mb-6 text-center">Ma Maison</h1>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 sm:p-6">
+      <h1 className="text-3xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-ios-blue to-blue-600">
+        Ma Maison
+      </h1>
       
-      <div className="max-w-3xl mx-auto grid gap-6 sm:grid-cols-2">
+      <div className="max-w-4xl mx-auto grid gap-6 sm:grid-cols-2">
         {rooms.map((room) => (
           <RoomCard
             key={room.id}

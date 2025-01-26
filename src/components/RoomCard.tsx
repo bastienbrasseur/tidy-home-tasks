@@ -2,6 +2,7 @@ import React from "react";
 import { Room } from "@/lib/types";
 import { ProgressCircle } from "./ProgressCircle";
 import { TaskList } from "./TaskList";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
 
 interface RoomCardProps {
   room: Room;
@@ -21,18 +22,23 @@ export const RoomCard: React.FC<RoomCardProps> = ({
     : 0;
 
   return (
-    <div className="bg-white rounded-xl p-4 shadow-sm animate-fade-in">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-semibold">{room.name}</h2>
-        <ProgressCircle progress={progress} />
-      </div>
-      
-      <TaskList
-        tasks={room.tasks}
-        onToggleTask={onToggleTask}
-        onDeleteTask={onDeleteTask}
-        onToggleUrgent={onToggleUrgent}
-      />
-    </div>
+    <Card className="group hover:shadow-lg transition-all duration-300 animate-fade-in bg-white/80 backdrop-blur-sm border-transparent hover:border-ios-blue/20">
+      <CardHeader className="pb-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600">
+            {room.name}
+          </h2>
+          <ProgressCircle progress={progress} />
+        </div>
+      </CardHeader>
+      <CardContent>
+        <TaskList
+          tasks={room.tasks}
+          onToggleTask={onToggleTask}
+          onDeleteTask={onDeleteTask}
+          onToggleUrgent={onToggleUrgent}
+        />
+      </CardContent>
+    </Card>
   );
 };
