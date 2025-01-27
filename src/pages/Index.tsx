@@ -4,6 +4,7 @@ import { AddTaskDialog } from "@/components/AddTaskDialog";
 import { RoomManager } from "@/components/RoomManager";
 import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { useHomeManager } from "@/hooks/useHomeManager";
+import { Room } from "@/lib/types";
 
 const Index = () => {
   const {
@@ -19,6 +20,12 @@ const Index = () => {
 
   const [isTaskDialogOpen, setIsTaskDialogOpen] = React.useState(false);
   const [isRoomDialogOpen, setIsRoomDialogOpen] = React.useState(false);
+  const [selectedRoom, setSelectedRoom] = React.useState<Room | null>(null);
+
+  const handleEditRoom = (room: Room) => {
+    setSelectedRoom(room);
+    setIsRoomDialogOpen(true);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 sm:p-6">
@@ -34,9 +41,7 @@ const Index = () => {
             onToggleTask={toggleTask}
             onDeleteTask={deleteTask}
             onToggleUrgent={toggleUrgentTask}
-            onEditRoom={() => {
-              setIsRoomDialogOpen(true);
-            }}
+            onEditRoom={handleEditRoom}
             onDeleteRoom={deleteRoom}
           />
         ))}
@@ -56,10 +61,14 @@ const Index = () => {
         onDeleteRoom={deleteRoom}
         open={isRoomDialogOpen}
         onOpenChange={setIsRoomDialogOpen}
+        selectedRoom={selectedRoom}
       />
 
       <FloatingActionButton
-        onAddRoom={() => setIsRoomDialogOpen(true)}
+        onAddRoom={() => {
+          setSelectedRoom(null);
+          setIsRoomDialogOpen(true);
+        }}
         onAddTask={() => setIsTaskDialogOpen(true)}
       />
     </div>
