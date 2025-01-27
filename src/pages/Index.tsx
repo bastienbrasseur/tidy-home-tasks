@@ -19,31 +19,46 @@ const Index = () => {
     toggleUrgentTask,
   } = useHomeManager();
 
-  const { toast } = useToast();
   const [isTaskDialogOpen, setIsTaskDialogOpen] = React.useState(false);
   const [isRoomDialogOpen, setIsRoomDialogOpen] = React.useState(false);
   const [selectedRoom, setSelectedRoom] = React.useState<Room | null>(null);
+  const { toast } = useToast();
 
-  const handleEditRoom = (room: Room) => {
-    setSelectedRoom(room);
-    setIsRoomDialogOpen(true);
-  };
+  console.log("Current state:", { isRoomDialogOpen, isTaskDialogOpen, selectedRoom, rooms });
 
   const handleAddRoom = (name: string) => {
     addRoom(name);
     setIsRoomDialogOpen(false);
     setSelectedRoom(null);
+    toast({
+      title: "Succès",
+      description: "La pièce a été ajoutée avec succès",
+    });
+  };
+
+  const handleEditRoom = (room: Room) => {
+    console.log("Edit room clicked:", room);
+    setSelectedRoom(room);
+    setIsRoomDialogOpen(true);
   };
 
   const handleEditRoomSubmit = (id: string, name: string) => {
     editRoom(id, name);
     setIsRoomDialogOpen(false);
     setSelectedRoom(null);
+    toast({
+      title: "Succès",
+      description: "La pièce a été modifiée avec succès",
+    });
   };
 
   const handleDeleteRoom = (id: string) => {
     deleteRoom(id);
     setSelectedRoom(null);
+    toast({
+      title: "Succès",
+      description: "La pièce a été supprimée avec succès",
+    });
   };
 
   const handleOpenChange = (open: boolean) => {
@@ -91,8 +106,14 @@ const Index = () => {
       />
 
       <FloatingActionButton
-        onAddRoom={() => setIsRoomDialogOpen(true)}
-        onAddTask={() => setIsTaskDialogOpen(true)}
+        onAddRoom={() => {
+          console.log("Add room button clicked");
+          setIsRoomDialogOpen(true);
+        }}
+        onAddTask={() => {
+          console.log("Add task button clicked");
+          setIsTaskDialogOpen(true);
+        }}
       />
     </div>
   );

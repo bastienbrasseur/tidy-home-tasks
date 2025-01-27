@@ -18,15 +18,7 @@ export const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({
   onAddRoom,
   onAddTask,
 }) => {
-  const handleAddRoom = (e: React.MouseEvent) => {
-    e.preventDefault();
-    onAddRoom();
-  };
-
-  const handleAddTask = (e: React.MouseEvent) => {
-    e.preventDefault();
-    onAddTask();
-  };
+  console.log("FloatingActionButton rendered");
 
   return (
     <DropdownMenu>
@@ -44,10 +36,24 @@ export const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">
-        <DropdownMenuItem onClick={handleAddRoom} className="cursor-pointer">
+        <DropdownMenuItem 
+          onClick={(e) => {
+            e.preventDefault();
+            console.log("Add room menu item clicked");
+            onAddRoom();
+          }} 
+          className="cursor-pointer"
+        >
           Ajouter une pièce
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={handleAddTask} className="cursor-pointer">
+        <DropdownMenuItem 
+          onClick={(e) => {
+            e.preventDefault();
+            console.log("Add task menu item clicked");
+            onAddTask();
+          }} 
+          className="cursor-pointer"
+        >
           Ajouter une tâche
         </DropdownMenuItem>
       </DropdownMenuContent>
