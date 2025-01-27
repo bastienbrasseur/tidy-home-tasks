@@ -30,56 +30,20 @@ const Index = () => {
   };
 
   const handleAddRoom = (name: string) => {
-    try {
-      addRoom(name);
-      setIsRoomDialogOpen(false);
-      setSelectedRoom(null);
-      toast({
-        title: "Succès",
-        description: "La pièce a été ajoutée avec succès",
-      });
-    } catch (error) {
-      toast({
-        title: "Erreur",
-        description: "Une erreur est survenue lors de l'ajout de la pièce",
-        variant: "destructive",
-      });
-    }
+    addRoom(name);
+    setIsRoomDialogOpen(false);
+    setSelectedRoom(null);
   };
 
   const handleEditRoomSubmit = (id: string, name: string) => {
-    try {
-      editRoom(id, name);
-      setIsRoomDialogOpen(false);
-      setSelectedRoom(null);
-      toast({
-        title: "Succès",
-        description: "La pièce a été modifiée avec succès",
-      });
-    } catch (error) {
-      toast({
-        title: "Erreur",
-        description: "Une erreur est survenue lors de la modification de la pièce",
-        variant: "destructive",
-      });
-    }
+    editRoom(id, name);
+    setIsRoomDialogOpen(false);
+    setSelectedRoom(null);
   };
 
   const handleDeleteRoom = (id: string) => {
-    try {
-      deleteRoom(id);
-      setSelectedRoom(null);
-      toast({
-        title: "Succès",
-        description: "La pièce a été supprimée avec succès",
-      });
-    } catch (error) {
-      toast({
-        title: "Erreur",
-        description: "Une erreur est survenue lors de la suppression de la pièce",
-        variant: "destructive",
-      });
-    }
+    deleteRoom(id);
+    setSelectedRoom(null);
   };
 
   const handleOpenChange = (open: boolean) => {
@@ -127,10 +91,7 @@ const Index = () => {
       />
 
       <FloatingActionButton
-        onAddRoom={() => {
-          setSelectedRoom(null);
-          setIsRoomDialogOpen(true);
-        }}
+        onAddRoom={() => setIsRoomDialogOpen(true)}
         onAddTask={() => setIsTaskDialogOpen(true)}
       />
     </div>
