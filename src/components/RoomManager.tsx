@@ -18,6 +18,7 @@ interface RoomManagerProps {
   onDeleteRoom: (id: string) => void;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  selectedRoom: Room | null;
 }
 
 export const RoomManager: React.FC<RoomManagerProps> = ({
@@ -27,10 +28,18 @@ export const RoomManager: React.FC<RoomManagerProps> = ({
   onDeleteRoom,
   open,
   onOpenChange,
+  selectedRoom,
 }) => {
-  const [editingRoom, setEditingRoom] = React.useState<Room | null>(null);
   const [roomName, setRoomName] = React.useState("");
   const { toast } = useToast();
+
+  React.useEffect(() => {
+    if (selectedRoom) {
+      setRoomName(selectedRoom.name);
+    } else {
+      setRoomName("");
+    }
+  }, [selectedRoom]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,8 +52,8 @@ export const RoomManager: React.FC<RoomManagerProps> = ({
       return;
     }
 
-    if (editingRoom) {
-      onEditRoom(editingRoom.id, roomName.trim());
+    if (selectedRoom) {
+      onEditRoom(selectedRoom.id, roomName.trim());
       toast({
         title: "Pièce modifiée",
         description: "La pièce a été modifiée avec succès",
@@ -58,13 +67,11 @@ export const RoomManager: React.FC<RoomManagerProps> = ({
     }
 
     setRoomName("");
-    setEditingRoom(null);
     onOpenChange(false);
   };
 
   React.useEffect(() => {
     if (!open) {
-      setEditingRoom(null);
       setRoomName("");
     }
   }, [open]);
@@ -74,7 +81,7 @@ export const RoomManager: React.FC<RoomManagerProps> = ({
       <DialogContent className="sm:max-w-[425px] bg-white/80 backdrop-blur-sm">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-ios-blue to-blue-600">
-            {editingRoom ? "Modifier la pièce" : "Ajouter une pièce"}
+            {selectedRoom ? "Modifier la pièce" : "Ajouter une pièce"}
           </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
@@ -88,7 +95,7 @@ export const RoomManager: React.FC<RoomManagerProps> = ({
             type="submit" 
             className="w-full bg-gradient-to-r from-ios-blue to-blue-500 hover:opacity-90 transition-all duration-200"
           >
-            {editingRoom ? "Modifier" : "Ajouter"}
+            {selectedRoom ? "Modifier" : "Ajouter"}
           </Button>
         </form>
       </DialogContent>
