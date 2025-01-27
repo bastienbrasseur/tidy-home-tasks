@@ -27,6 +27,30 @@ const Index = () => {
     setIsRoomDialogOpen(true);
   };
 
+  const handleAddRoom = (name: string) => {
+    addRoom(name);
+    setIsRoomDialogOpen(false);
+    setSelectedRoom(null);
+  };
+
+  const handleEditRoomSubmit = (id: string, name: string) => {
+    editRoom(id, name);
+    setIsRoomDialogOpen(false);
+    setSelectedRoom(null);
+  };
+
+  const handleDeleteRoom = (id: string) => {
+    deleteRoom(id);
+    setSelectedRoom(null);
+  };
+
+  const handleOpenChange = (open: boolean) => {
+    setIsRoomDialogOpen(open);
+    if (!open) {
+      setSelectedRoom(null);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 sm:p-6">
       <h1 className="text-3xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-ios-blue to-blue-600">
@@ -42,7 +66,7 @@ const Index = () => {
             onDeleteTask={deleteTask}
             onToggleUrgent={toggleUrgentTask}
             onEditRoom={handleEditRoom}
-            onDeleteRoom={deleteRoom}
+            onDeleteRoom={handleDeleteRoom}
           />
         ))}
       </div>
@@ -56,11 +80,11 @@ const Index = () => {
 
       <RoomManager
         rooms={rooms}
-        onAddRoom={addRoom}
-        onEditRoom={editRoom}
-        onDeleteRoom={deleteRoom}
+        onAddRoom={handleAddRoom}
+        onEditRoom={handleEditRoomSubmit}
+        onDeleteRoom={handleDeleteRoom}
         open={isRoomDialogOpen}
-        onOpenChange={setIsRoomDialogOpen}
+        onOpenChange={handleOpenChange}
         selectedRoom={selectedRoom}
       />
 
