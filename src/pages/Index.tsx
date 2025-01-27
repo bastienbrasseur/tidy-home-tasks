@@ -5,6 +5,7 @@ import { RoomManager } from "@/components/RoomManager";
 import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { useHomeManager } from "@/hooks/useHomeManager";
 import { Room } from "@/lib/types";
+import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
   const {
@@ -18,6 +19,7 @@ const Index = () => {
     toggleUrgentTask,
   } = useHomeManager();
 
+  const { toast } = useToast();
   const [isTaskDialogOpen, setIsTaskDialogOpen] = React.useState(false);
   const [isRoomDialogOpen, setIsRoomDialogOpen] = React.useState(false);
   const [selectedRoom, setSelectedRoom] = React.useState<Room | null>(null);
@@ -28,20 +30,56 @@ const Index = () => {
   };
 
   const handleAddRoom = (name: string) => {
-    addRoom(name);
-    setIsRoomDialogOpen(false);
-    setSelectedRoom(null);
+    try {
+      addRoom(name);
+      setIsRoomDialogOpen(false);
+      setSelectedRoom(null);
+      toast({
+        title: "Succès",
+        description: "La pièce a été ajoutée avec succès",
+      });
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue lors de l'ajout de la pièce",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleEditRoomSubmit = (id: string, name: string) => {
-    editRoom(id, name);
-    setIsRoomDialogOpen(false);
-    setSelectedRoom(null);
+    try {
+      editRoom(id, name);
+      setIsRoomDialogOpen(false);
+      setSelectedRoom(null);
+      toast({
+        title: "Succès",
+        description: "La pièce a été modifiée avec succès",
+      });
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue lors de la modification de la pièce",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleDeleteRoom = (id: string) => {
-    deleteRoom(id);
-    setSelectedRoom(null);
+    try {
+      deleteRoom(id);
+      setSelectedRoom(null);
+      toast({
+        title: "Succès",
+        description: "La pièce a été supprimée avec succès",
+      });
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue lors de la suppression de la pièce",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleOpenChange = (open: boolean) => {
